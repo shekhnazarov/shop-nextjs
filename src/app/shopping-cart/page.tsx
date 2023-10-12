@@ -7,10 +7,16 @@ import { useEffect, useState } from "react";
 import ReactStars from "react-stars";
 
 const ShoppingCart = () => {
-  const [products, setProducts] = useState<ProductType[]>(
-    JSON.parse(localStorage.getItem("carts") as string) || []
-  );
+  const [products, setProducts] = useState<ProductType[]>([]);
   const [total, setTotal] = useState<number>(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Perform localStorage action
+      const item = JSON.parse(localStorage.getItem("carts") as string) || [];
+      setProducts(item);
+    }
+  }, []);
 
   const removeProduct = (id: number) => {
     const updateCart = products.filter((product) => product?.id !== id);
