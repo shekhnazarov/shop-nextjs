@@ -31,20 +31,22 @@ const ProductDetailPage = () => {
   }, [id]);
 
   const handleClick = () => {
-    const products: ProductType[] =
-      JSON.parse(localStorage.getItem("carts") as string) || [];
-    const isExistProduct = products.find((c) => c?.id === product?.id);
+    if (typeof window !== "undefined") {
+      const products: ProductType[] =
+        JSON.parse(localStorage.getItem("carts") as string) || [];
+      const isExistProduct = products.find((c) => c?.id === product?.id);
 
-    if (isExistProduct) {
-      const updateData = products.map((c) =>
-        c.id === product?.id ? { ...c, quantity: c.quantity + 1 } : c
-      );
-      localStorage.setItem("carts", JSON.stringify(updateData));
-    } else {
-      const data = [...products, { ...product, quantity: 1 }];
-      localStorage.setItem("carts", JSON.stringify(data));
+      if (isExistProduct) {
+        const updateData = products.map((c) =>
+          c.id === product?.id ? { ...c, quantity: c.quantity + 1 } : c
+        );
+        localStorage.setItem("carts", JSON.stringify(updateData));
+      } else {
+        const data = [...products, { ...product, quantity: 1 }];
+        localStorage.setItem("carts", JSON.stringify(data));
+      }
+      toast("Product added to your bag");
     }
-    toast("Product added to your bag");
   };
   return (
     <Dialog
